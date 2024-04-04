@@ -43,6 +43,9 @@
             $file = fopen("users.txt", "a");
             fwrite($file, "$fname-$femail-$fpasswd\n");
             fclose($file);
+
+            header("Location : index.php");
+            exit;
         } catch (\Throwable $th) {
             throw $th;
         }

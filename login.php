@@ -47,32 +47,32 @@
     // if ($email != "" || $passwd != "") loginUser($email, $passwd);
 
     function loginUser($femail, $fpasswd)
-{
-    try {
-        $file = fopen("users.txt", "r");
+    {
+        try {
+            $file = fopen("users.txt", "r");
 
-        while (!feof($file)) {
-            $line = trim(fgets($file));
+            while (!feof($file)) {
+                $line = trim(fgets($file));
 
-            if (!empty($line)) {
-                $userArr = explode("-", $line);
-                if ($femail == $userArr[1] && $fpasswd == $userArr[2]) {
-                    fclose($file);
-                    return true; 
+                if (!empty($line)) {
+                    $userArr = explode("-", $line);
+                    if ($femail == $userArr[1] && $fpasswd == $userArr[2]) {
+                        fclose($file);
+                        return true;
+                    }
                 }
             }
+            fclose($file);
+            return false;
+        } catch (\Throwable $th) {
+            throw $th;
         }
-        fclose($file);
-        return false;
-    } catch (\Throwable $th) {
-        throw $th;
     }
-}
 
-if ($email != "" && $passwd != "") {
-    if (loginUser($email, $passwd)) echo "Login successful!";
-    else echo "Invalid email or password.";
-}
+    if (loginUser($email, $passwd)) {
+        header("Location: index.php");
+        exit;
+    } else echo "Invalid email or password!";
     ?>
 
 </body>
