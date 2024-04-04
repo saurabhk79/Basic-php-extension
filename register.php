@@ -28,20 +28,19 @@
     function setUser($fname, $femail, $fpasswd)
     {
         try {
-            $file = fopen("users.txt", "a");
-
-            $data = file_get_contents("users.txt");
-            $dataInArr = explode("\n", $data);
-
-            foreach ($dataInArr as $user) {
-                echo $user;
-
-                $userArr = explode("-", $user);
-                if ($femail == $userArr[1]) {
-                    echo "Already exists!";
-                    return null;
+            $file = fopen("users.txt", "r");
+            while (!feof($file)) {
+                $line = trim(fgets($file));
+                $userData = explode("-", $line);
+                if ($userData[1] === $femail) {
+                    fclose($file);
+                    echo "User already exists.";
+                    return;
                 }
             }
+            fclose($file);
+
+            $file = fopen("users.txt", "a");
             fwrite($file, "$fname-$femail-$fpasswd\n");
             fclose($file);
         } catch (\Throwable $th) {
